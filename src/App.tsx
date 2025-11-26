@@ -11,10 +11,10 @@ function App() {
       <GridItem rowSpan={1} colSpan={2} >
         <NavBar></NavBar>
       </GridItem>
-      <GridItem rowSpan={1} colSpan={1} bgColor={'gold'} display={{base: "none", lg: "block"}}>
+      <GridItem rowSpan={1} colSpan={1}  display={{base: "none", lg: "block"}}>
         Aside
       </GridItem>
-      <GridItem rowSpan={1} colSpan={{base: 2, lg: 1}} bgColor={'blue'}>
+      <GridItem rowSpan={1} colSpan={{base: 2, lg: 1}} >
         Main
       </GridItem>
       
