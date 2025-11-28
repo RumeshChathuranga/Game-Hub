@@ -5,8 +5,8 @@ import GameGrid from "./component/GameGrid"
 function App() {
   return (
   <Grid
-      templateRows={{base:"repeat(2, 1fr)", lg:"repeat(2,1fr)"}}
-      templateColumns={{base:"repeat(1, 1fr)",lg:"repeat(2,1fr)"}}
+      templateRows={{base:"repeat(2)", lg:"repeat(2)"}}
+      templateColumns={{base:"repeat(1)",lg:"repeat(2)"}}
     >
       <GridItem rowSpan={1} colSpan={2} >
         <NavBar></NavBar>
