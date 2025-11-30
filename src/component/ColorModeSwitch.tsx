@@ -1,23 +1,15 @@
-import { HStack, Switch, SwitchControl, Text } from "@chakra-ui/react";
-import { useColorMode } from "@/components/ui/color-mode";
+import { ClientOnly, IconButton, Skeleton } from "@chakra-ui/react"
+import { useColorMode } from "@/components/ui/color-mode"
+import { LuMoon, LuSun } from "react-icons/lu"
 
 export default function ColorModeSwitch() {
-  const { toggleColorMode } = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode()
 
   return (
-    <>
-      <HStack>
-        <Switch.Root
-          onCheckedChange={toggleColorMode} colorPalette={"green"}
-        >
-          <Switch.HiddenInput />
-          <Switch.Control>
-            <Switch.Thumb />
-          </Switch.Control>
-          <Switch.Label />
-        </Switch.Root>
-        <Text>Dark Mode</Text>
-      </HStack>
-    </>
+    <ClientOnly fallback={<Skeleton boxSize="8" />}>
+      <IconButton onClick={toggleColorMode} variant="outline" size="md" marginRight={5} aria-label="Toggle color mode">
+        {colorMode === "light" ? <LuSun /> : <LuMoon />}
+      </IconButton>
+    </ClientOnly>
   );
 }
