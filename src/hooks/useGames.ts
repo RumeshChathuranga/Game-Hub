@@ -31,7 +31,10 @@ const useGames = () => {
 
     apiClient
       .get<fetchGamesResponse>("/games", { signal: controller.signal })
-      .then((res) => setGames(res.data.results))
+      .then((res) => {
+        setGames(res.data.results);
+        setIsLoading(false);
+      })
       .catch((err: any) => {
         // If request was cancelled, don't update state
         if (err instanceof CanceledError) {
@@ -39,8 +42,8 @@ const useGames = () => {
         }
 
         setError(err?.message ?? String(err));
-      })
-      .finally(() => setIsLoading(false));
+        setIsLoading(false);
+      });
 
     return () => controller.abort();
   }, []);
