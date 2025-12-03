@@ -1,11 +1,12 @@
-import useGenres from "@/hooks/useGenres";
 import { Box } from "@chakra-ui/react";
+import type { Genre } from "@/hooks/useGenres";
+import useData from "@/hooks/useData";
 
 export const GenreList = () => {
-  const { genres } = useGenres();
+  const { data } = useData<Genre>('/genres');
   return (
     <Box as="ul" listStylePosition="inside">
-      {genres.map((genre) => (<li key={genre.id}>{genre.name}</li>))}
+      {data.map((genre: Genre) => (<li key={genre.id}>{genre.name}</li>))}
     </Box>
   );
 };
