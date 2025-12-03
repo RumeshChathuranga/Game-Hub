@@ -22,11 +22,13 @@ A modern game discovery web application built with React, TypeScript, and Chakra
 ## Getting Started
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Start development server**
+
    ```bash
    npm run dev
    ```
