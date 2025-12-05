@@ -8,14 +8,19 @@ interface Props {
   selectedPlatform?: Platform | null;
 }
 
-export const PlatformSelector = ({onselectedPlatform, selectedPlatform}: Props) => {
+export const PlatformSelector = ({
+  onselectedPlatform,
+  selectedPlatform,
+}: Props) => {
   const { data, error } = usePlatforms();
   if (error) return null;
   return (
-    <Menu.Root >
+    <Menu.Root>
       <Menu.Trigger asChild>
-        <Button >
-          <Text fontWeight={'bold'}>{selectedPlatform?.name || "Platforms"}</Text>
+        <Button>
+          <Text fontWeight={"bold"}>
+            {selectedPlatform?.name || "Platforms"}
+          </Text>
           <BsChevronDown />
         </Button>
       </Menu.Trigger>
@@ -23,7 +28,12 @@ export const PlatformSelector = ({onselectedPlatform, selectedPlatform}: Props) 
         <Menu.Positioner>
           <Menu.Content>
             {data.map((platform) => (
-              <Menu.Item onClick={() => onselectedPlatform(platform)} value={platform.slug} key={platform.id}>
+              <Menu.Item
+                fontSize="md"
+                onClick={() => onselectedPlatform(platform)}
+                value={platform.slug}
+                key={platform.id}
+              >
                 {platform.name}
               </Menu.Item>
             ))}
