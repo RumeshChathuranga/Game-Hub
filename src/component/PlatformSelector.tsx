@@ -14,7 +14,7 @@ export const PlatformSelector = ({onselectedPlatform, selectedPlatform}: Props) 
   return (
     <Menu.Root >
       <Menu.Trigger asChild>
-        <Button marginY={5} marginX={2}>
+        <Button >
           <Text fontWeight={'bold'}>{selectedPlatform?.name || "Platforms"}</Text>
           <BsChevronDown />
         </Button>
