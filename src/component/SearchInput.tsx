@@ -2,8 +2,8 @@ import { Input, InputGroup, Kbd } from "@chakra-ui/react";
 import { useRef, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
 
-interface Props{
-    onSearch: (searchText: string) => void;
+interface Props {
+  onSearch: (searchText: string) => void;
 }
 
 export const SearchInput = ({ onSearch }: Props) => {
