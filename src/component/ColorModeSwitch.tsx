@@ -7,7 +7,7 @@ export default function ColorModeSwitch() {
 
   return (
     <ClientOnly fallback={<Skeleton boxSize="8" />}>
-      <IconButton onClick={toggleColorMode} variant="outline" size="md"  aria-label="Toggle color mode">
+      <IconButton marginX={2} onClick={toggleColorMode} variant="outline" size="md"  aria-label="Toggle color mode">
         {colorMode === "light" ? <LuSun /> : <LuMoon />}
       </IconButton>
     </ClientOnly>
