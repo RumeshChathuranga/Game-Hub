@@ -31,7 +31,7 @@ export const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
     <>
       <Heading fontSize={'2xl'} marginBottom={3}>Genres</Heading>
       <List.Root>
-        {data?.map((genre: Genre) => (
+        {data?.results.map((genre: Genre) => (
           <Stack key={genre.id} paddingY="8px">
             <HStack>
               <Image
