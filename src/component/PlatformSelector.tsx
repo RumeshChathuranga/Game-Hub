@@ -27,7 +27,7 @@ export const PlatformSelector = ({
       <Portal>
         <Menu.Positioner>
           <Menu.Content>
-            {data.map((platform) => (
+            {data?.map((platform) => (
               <Menu.Item
                 fontSize="md"
                 onClick={() => onselectedPlatform(platform)}
