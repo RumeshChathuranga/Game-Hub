@@ -1,18 +1,21 @@
-import type { Platform } from "@/hooks/useGames";
+import type { Platform } from "@/hooks/usePlatforms";
 import usePlatforms from "@/hooks/usePlatforms";
 import { Button, Menu, Portal, Text } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
 
 interface Props {
   onselectedPlatform: (platform: Platform) => void;
-  selectedPlatform?: Platform | null;
+  selectedPlatformId?: number;
 }
 
 export const PlatformSelector = ({
   onselectedPlatform,
-  selectedPlatform,
+  selectedPlatformId,
 }: Props) => {
   const { data, error } = usePlatforms();
+  const selectedPlatform = data?.results.find(
+    (p) => p.id === selectedPlatformId
+  );
   if (error) return null;
   return (
     <Menu.Root>
@@ -27,7 +30,7 @@ export const PlatformSelector = ({
       <Portal>
         <Menu.Positioner>
           <Menu.Content>
-            {data.map((platform) => (
+            {data?.results.map((platform) => (
               <Menu.Item
                 fontSize="md"
                 onClick={() => onselectedPlatform(platform)}

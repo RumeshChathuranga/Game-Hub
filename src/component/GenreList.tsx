@@ -13,10 +13,13 @@ import useGenres from "@/hooks/useGenres";
 
 interface Props {
   onSelectGenre: (genre: Genre) => void;
-  selectedGenre: Genre | null;
+  selectedGenreId?: number;
 }
 
-export const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
+export const GenreList = ({
+  selectedGenreId,
+  onSelectGenre,
+}: Props) => {
   const { data, isLoading, error } = useGenres();
   if (error) return null;
   if (isLoading)
@@ -29,9 +32,11 @@ export const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
     );
   return (
     <>
-      <Heading fontSize={'2xl'} marginBottom={3}>Genres</Heading>
+      <Heading fontSize={"2xl"} marginBottom={3}>
+        Genres
+      </Heading>
       <List.Root>
-        {data.map((genre: Genre) => (
+        {data?.results.map((genre: Genre) => (
           <Stack key={genre.id} paddingY="8px">
             <HStack>
               <Image
@@ -41,7 +46,7 @@ export const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
                 objectFit="cover"
               />
               <Link
-                fontWeight={genre.id === selectedGenre?.id ? "bold" : "normal"}
+                fontWeight={genre.id === selectedGenreId? "bold" : "normal"}
                 onClick={() => onSelectGenre(genre)}
                 fontSize={"lg"}
               >
