@@ -1,13 +1,11 @@
+import useGameQueryStore from "@/ store";
 import { Input, InputGroup, Kbd } from "@chakra-ui/react";
 import { useRef, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
 
-interface Props {
-  onSearch: (searchText: string) => void;
-}
-
-export const SearchInput = ({ onSearch }: Props) => {
+export const SearchInput = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const setSearchText = useGameQueryStore((s) => s.setSearchText);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -26,7 +24,7 @@ export const SearchInput = ({ onSearch }: Props) => {
       onSubmit={(event) => {
         event.preventDefault();
         if (inputRef.current) {
-          onSearch(inputRef.current.value);
+          setSearchText(inputRef.current.value);
         }
       }}
     >
