@@ -1,4 +1,5 @@
 import ExpandableText from "@/component/ExpandableText";
+import GameAttributes from "@/component/GameAttributes";
 import useGame from "@/hooks/useGame";
 import { Heading, Spinner } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
@@ -9,11 +10,12 @@ const GameDetailPage = () => {
 
   if (isLoading) return <Spinner />;
 
-  if (error) throw error; // can log permenent place to log errors
+  if (error || game === undefined) throw error; // can log permenent place to log errors
   return (
     <>
       <Heading>{game?.name}</Heading>
-      <ExpandableText>{game?.description_raw || ""}</ExpandableText>
+      <ExpandableText>{game.description_raw || ""}</ExpandableText>
+      <GameAttributes game={game} />
     </>
   );
 };
