@@ -7,7 +7,7 @@ import { Box, Grid, GridItem, HStack } from "@chakra-ui/react";
 
 const HomePage = () => {
   return (
-    <Grid
+  <Grid
       templateRows={{ base: "repeat(2)", lg: "repeat(2)" }}
       templateColumns={{ base: "1fr", lg: "200px 1fr" }}
     >
