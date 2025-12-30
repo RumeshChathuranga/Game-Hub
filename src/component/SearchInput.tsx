@@ -2,10 +2,12 @@ import useGameQueryStore from "@/ store";
 import { Input, InputGroup, Kbd } from "@chakra-ui/react";
 import { useRef, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export const SearchInput = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const setSearchText = useGameQueryStore((s) => s.setSearchText);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -25,6 +27,7 @@ export const SearchInput = () => {
         event.preventDefault();
         if (inputRef.current) {
           setSearchText(inputRef.current.value);
+          navigate("/");
         }
       }}
     >
