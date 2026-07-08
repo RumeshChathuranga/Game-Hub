@@ -1,49 +1,63 @@
-# Game Hub 🎮
+# Game Hub
 
-A modern game discovery web application built with React, TypeScript, and Chakra UI. Browse and discover games with a clean, responsive interface.
+A modern game discovery web application built with React, TypeScript, and Chakra UI. This application allows users to browse, search, and discover games with a responsive and intuitive interface.
 
-## Features
+## Key Features
 
-- 🎯 Game browsing with grid layout
-- 🖼️ Game cards with images and details
-- ⚡ Loading skeletons for better UX
-- 🌙 Dark/Light mode support
-- 📱 Responsive design
-- 🔄 Proper request handling with cancellation
+- **Game Discovery:** Browse a vast collection of games with a dynamic grid layout.
+- **Detailed Game Information:** View comprehensive details including screenshots, trailers, attributes, and expandable descriptions on dedicated game pages.
+- **Advanced State Management:** Utilizes Zustand for efficient and centralized application state handling.
+- **Optimized Data Fetching:** Implements React Query for data fetching, caching, synchronization, and performance optimizations.
+- **Client-Side Routing:** Seamless navigation and error handling powered by React Router.
+- **Infinite Scrolling:** Smoothly load more games as you scroll for an uninterrupted browsing experience.
+- **Dark and Light Mode:** Built-in theme support using Chakra UI.
+- **Responsive Design:** Fully optimized for desktop, tablet, and mobile devices.
 
-## Tech Stack
+## Technology Stack
 
-- **React** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **Chakra UI** - Component library
-- **Axios** - HTTP client
+- **Frontend Framework:** React 19
+- **Language:** TypeScript
+- **Build Tool:** Vite
+- **UI Component Library:** Chakra UI
+- **State Management:** Zustand
+- **Data Fetching & Caching:** React Query
+- **Routing:** React Router
+- **HTTP Client:** Axios
 
 ## Getting Started
 
-1. **Install dependencies**
+Follow these steps to run the project locally.
 
+### Prerequisites
+
+Ensure you have Node.js installed on your machine.
+
+### Installation
+
+1. Install the dependencies:
    ```bash
    npm install
    ```
 
-2. **Start development server**
-
+2. Start the development server:
    ```bash
    npm run dev
    ```
 
-3. **Build for production**
+3. Build for production:
    ```bash
    npm run build
    ```
 
 ## Project Structure
 
-```
+```text
 src/
-├── components/     # Reusable UI components
-├── hooks/         # Custom React hooks
-├── services/      # API services
-└── assets/        # Static assets
+├── component/      # Reusable UI components
+├── entities/       # TypeScript interfaces and type definitions
+├── hooks/          # Custom React hooks (including React Query hooks)
+├── pages/          # React Router page components
+├── services/       # API integration services
+├── store.ts        # Zustand store configuration
+└── routes.tsx      # Application routing configuration
 ```
