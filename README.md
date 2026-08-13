@@ -1,6 +1,6 @@
 # Game Hub
 
-A game discovery application built with React 19, TypeScript and Chakra UI, powered by the [RAWG](https://rawg.io/apidocs) video game database. Browse over 800,000 games with live search, genre and platform filtering, sorting, and infinite scroll.
+A game discovery application built with React 19, TypeScript and Chakra UI, powered by the [RAWG](https://rawg.io/apidocs) video game database. Browse over 800,000 games with live search, genre and platform filtering, sorting and infinite scroll, then open any title for a full detail page with trailers, screenshots and metadata.
 
 <p align="left">
   <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" />
@@ -9,14 +9,18 @@ A game discovery application built with React 19, TypeScript and Chakra UI, powe
   <img alt="Chakra UI" src="https://img.shields.io/badge/Chakra_UI-3-319795?logo=chakraui&logoColor=white" />
   <img alt="TanStack Query" src="https://img.shields.io/badge/TanStack_Query-5-FF4154?logo=reactquery&logoColor=white" />
   <img alt="Zustand" src="https://img.shields.io/badge/Zustand-5-443E38" />
+  <img alt="React Router" src="https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white" />
 </p>
 
 **🔗 Live demo: [games-hub.vercel.app](https://games-hub.vercel.app/)** _(if games don't load, RAWG's API may be down — not an app bug)_
 
 ---
 
+
 ## Key Features
 
+- **Game detail pages** — click any card to open `/games/:slug` with a trailer, screenshot gallery, expandable description and an attributes panel (platforms, Metascore, genres, publishers)
+- **Client-side routing** — React Router 7 with a shared layout, nested routes and a dedicated error page that distinguishes a 404 from an unexpected failure
 - **Infinite scroll** — games load page-by-page as you scroll, using TanStack Query's `useInfiniteQuery`
 - **Live search** — with a `Ctrl/⌘ + K` keyboard shortcut to focus the search box
 - **Filter by genre** — sidebar list backed by the RAWG genres endpoint
@@ -41,6 +45,7 @@ A game discovery application built with React 19, TypeScript and Chakra UI, powe
 | **Chakra UI 3** | Accessible component primitives with a built-in responsive style system |
 | **TanStack Query 5** | Server-state: caching, deduplication, background refetching, pagination |
 | **Zustand 5** | Client-state: a single, minimal store for the active query — no provider nesting |
+| **React Router 7** | Nested routing, URL params for game slugs, and route-level error boundaries |
 | **Axios** | HTTP client, wrapped in a generic reusable `APIClient<T>` |
 | **react-infinite-scroll-component** | Scroll-triggered pagination |
 | **react-icons** | Platform and UI iconography |
@@ -53,10 +58,16 @@ A game discovery application built with React 19, TypeScript and Chakra UI, powe
 The app draws a deliberate line between **server state** and **client state** — the single most important design decision in the codebase.
 
 ```
+                    ┌─────────────────────────┐
+                    │  Router (react-router)  │
+                    │  /          → HomePage  │
+                    │  /games/:slug → Detail  │
+                    └────────────┬────────────┘
+                                 ▼
 ┌──────────────────────────────────────────────────────────┐
 │  UI components                                           │
 │  SearchInput · GenreList · PlatformSelector              │
-│  SortSelector · GameHeading · GameGrid                   │
+│  SortSelector · GameHeading · GameGrid · GameAttributes  │
 └───────────────┬──────────────────────┬───────────────────┘
                 │ write                │ read
                 ▼                      ▼
@@ -69,12 +80,14 @@ The app draws a deliberate line between **server state** and **client state** �
                         ▼
         ┌───────────────────────────────────┐
         │  Hooks (server state)             │
-        │  useGames · useGenres             │
-        │  usePlatforms                     │
+        │  useGames · useGame · useGenres   │
+        │  usePlatforms · useTrailers       │
+        │  useScreenShots                   │
         └───────────────┬───────────────────┘
                         ▼
         ┌───────────────────────────────────┐
         │  APIClient<T>  →  RAWG API        │
+        │  typed by src/entities/*          │
         └───────────────────────────────────┘
 ```
 
@@ -83,7 +96,8 @@ The app draws a deliberate line between **server state** and **client state** �
 - **No prop drilling.** The query object lives in a Zustand store, so `SearchInput` in the navbar and `GameGrid` several levels away both talk to the same state directly. An earlier revision threaded a `gameQuery` object down through `App` as props — the store removed that coupling entirely.
 - **The store is the cache key.** `useGames` uses `["games", gameQuery]` as its query key, so any filter change automatically triggers the right fetch — and revisiting a previous filter combination is served instantly from cache.
 - **Selectors keep re-renders narrow.** Components subscribe to individual slices (`useGameQueryStore((s) => s.gameQuery.genreId)`), so changing the sort order doesn't re-render the genre list.
-- **One generic HTTP client.** `APIClient<T>` is instantiated per endpoint (`new APIClient<Game>("/games")`), so adding an endpoint is a single line rather than a new fetch function.
+- **One generic HTTP client.** `APIClient<T>` is instantiated per endpoint (`new APIClient<Game>("/games")`) and exposes `getAll()` for lists and `get(slug)` for a single record, so adding an endpoint is a single line rather than a new fetch function.
+- **Domain types live in one place.** Every API shape is a standalone interface under `src/entities/` (`Game`, `Genre`, `Platform`, `Publisher`, `Trailer`, `ScreenShot`) rather than being declared inside the hook that happens to fetch it. Hooks and components import the type directly, so nothing depends on a hook module just to borrow a type.
 - **Instant first paint.** Genres and platforms are seeded with `initialData` from local files in `src/data/` and cached for 24 hours — the sidebar and platform dropdown render immediately with no loading flash, then reconcile with the API in the background.
 
 ---
@@ -140,6 +154,19 @@ The app runs at **http://localhost:5173**.
 
 ```text
 src/
+├── pages/                  # Route-level components
+│   ├── Layout.tsx          # Navbar + <Outlet /> shell
+│   ├── HomePage.tsx        # Sidebar, filters and game grid
+│   ├── GameDetailPage.tsx  # Single game view
+│   └── ErrorPage.tsx       # 404 and unexpected-error boundary
+├── routes.tsx              # createBrowserRouter route table
+├── entities/               # Domain types shared across the app
+│   ├── Game.ts
+│   ├── Genre.ts
+│   ├── Platform.ts
+│   ├── Publishers.ts
+│   ├── ScreenShot.ts
+│   └── Trailer.ts
 ├── component/              # Feature components
 │   ├── navbar.tsx          # Logo, search, theme toggle
 │   ├── SearchInput.tsx     # Search box with ⌘K shortcut
@@ -151,6 +178,11 @@ src/
 │   ├── GameCard.tsx
 │   ├── GameCardContainer.tsx
 │   ├── GameCardSkeleton.tsx
+│   ├── GameAttributes.tsx  # Platforms, score, genres, publishers
+│   ├── GameTrailer.tsx     # Inline trailer player
+│   ├── GameScreenshots.tsx # Screenshot gallery
+│   ├── ExpandableText.tsx  # Read more / show less description
+│   ├── DefinitionItem.tsx  # <dt>/<dd> pair for the attributes grid
 │   ├── CriticScore.tsx     # Colour-coded Metacritic badge
 │   ├── Emoji.tsx           # Rating sentiment icon
 │   ├── PlatformIconList.tsx
@@ -162,8 +194,11 @@ src/
 │   └── toaster.tsx
 ├── hooks/                  # Server-state hooks (TanStack Query)
 │   ├── useGames.ts         # Paginated, filtered game list
+│   ├── useGame.ts          # Single game by slug
 │   ├── useGenres.ts
-│   └── usePlatforms.ts
+│   ├── usePlatforms.ts
+│   ├── useTrailers.ts
+│   └── useScreenShots.ts
 ├── services/
 │   ├── api-client.ts       # Generic APIClient<T> over Axios
 │   └── image-url.ts        # Builds cropped RAWG image URLs
@@ -172,8 +207,7 @@ src/
 │   └── platforms.ts
 ├── assets/                 # Logo, rating emojis, image placeholder
 ├── store.ts                # Zustand game-query store
-├── App.tsx                 # Responsive grid layout
-└── main.tsx                # Providers and app entry point
+└── main.tsx                # Providers, router and app entry point
 ```
 
 Path aliases are configured via `vite-tsconfig-paths`, so imports use `@/` rather than relative traversal:
@@ -192,7 +226,11 @@ import useGames from "@/hooks/useGames";
 
 **Image optimisation.** RAWG serves full-resolution art. `getCroppedImageUrl` splices `crop/600/400/` into the media path so the CDN returns an appropriately sized image, cutting page weight substantially on a grid of 20+ cards. Missing artwork falls back to a bundled placeholder.
 
-**Type safety across the boundary.** The Axios wrapper is generic over the response shape (`fetchResponse<T>`), so `Game`, `Genre` and `Platform` types flow from the API layer through the hooks and into components without a single `any`.
+**Type safety across the boundary.** The Axios wrapper is generic over the response shape (`fetchResponse<T>`), so the `src/entities/` types flow from the API layer through the hooks and into components without a single `any`.
+
+**Route-level error handling.** `GameDetailPage` rethrows fetch failures rather than rendering an inline message, letting the router's `errorElement` catch them in one place. `ErrorPage` then uses `isRouteErrorResponse` to tell a genuine 404 apart from an unexpected exception and word the message accordingly.
+
+**Progressive detail loading.** The detail page's trailer and screenshot queries are keyed by game id and render nothing while loading or when RAWG has no media for that title — common for older or indie games — so a missing trailer degrades silently instead of leaving an empty player.
 
 ---
 
@@ -208,11 +246,13 @@ To deploy your own instance:
 
 > Environment variables are read at **build time**, not runtime. After adding or changing `VITE_RAWG_API_KEY` you must trigger a fresh deployment for it to take effect.
 
+`vercel.json` rewrites all paths to `index.html`. Without it the client-side router owns routes the server knows nothing about, so loading or refreshing a deep link such as `/games/celeste` directly would return a 404.
+
 ---
 
 ## Roadmap
 
-- [ ] Game detail page with screenshots, trailers and description
+- [x] Game detail page with screenshots, trailers and description
 - [ ] Persist active filters to the URL so searches are shareable
 - [ ] Unit and component tests (Vitest + React Testing Library)
 - [ ] Proxy API requests through a lightweight backend to hide the key

@@ -12,7 +12,7 @@ export const GameHeading = () => {
   const { data: platforms } = usePlatforms();
   const platform = platforms?.results.find((p) => p.id === platformId);
 
-  let heading = `${platform?.name || ""} ${genre?.name || ""} Games`;
+  const heading = `${platform?.name || ""} ${genre?.name || ""} Games`;
   return (
     <Heading fontSize="5xl" marginY={5}>
       {heading || "Game Hub"}
