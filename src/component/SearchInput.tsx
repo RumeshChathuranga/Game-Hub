@@ -1,4 +1,4 @@
-import useGameQueryStore from "@/ store";
+import useGameQueryStore from "@/store";
 import { Input, InputGroup, Kbd } from "@chakra-ui/react";
 import { useRef, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
