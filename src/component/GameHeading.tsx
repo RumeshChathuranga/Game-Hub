@@ -1,4 +1,4 @@
-import useGameQueryStore from "@/ store";
+import useGameQueryStore from "@/store";
 import useGenres from "@/hooks/useGenres";
 import usePlatforms from "@/hooks/usePlatforms";
 import { Heading } from "@chakra-ui/react";
