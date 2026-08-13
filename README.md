@@ -1,4 +1,4 @@
-# Game Hub 🎮
+# Game Hub
 
 A game discovery application built with React 19, TypeScript and Chakra UI, powered by the [RAWG](https://rawg.io/apidocs) video game database. Browse over 800,000 games with live search, genre and platform filtering, sorting, and infinite scroll.
 
@@ -15,7 +15,7 @@ A game discovery application built with React 19, TypeScript and Chakra UI, powe
 
 ---
 
-## Features
+## Key Features
 
 - **Infinite scroll** — games load page-by-page as you scroll, using TanStack Query's `useInfiniteQuery`
 - **Live search** — with a `Ctrl/⌘ + K` keyboard shortcut to focus the search box
@@ -138,7 +138,7 @@ The app runs at **http://localhost:5173**.
 
 ## Project structure
 
-```
+```text
 src/
 ├── component/              # Feature components
 │   ├── navbar.tsx          # Logo, search, theme toggle
