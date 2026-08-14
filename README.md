@@ -14,6 +14,9 @@ A game discovery application built with React 19, TypeScript and Chakra UI, powe
 
 **🔗 Live demo: [games-hub.vercel.app](https://games-hub.vercel.app/)** _(if games don't load, RAWG's API may be down — not an app bug)_
 
+### 🖥️ UI Preview
+
+![Game Hub - Home Page](./screenshots/home-dark.png)
 ---
 
 
