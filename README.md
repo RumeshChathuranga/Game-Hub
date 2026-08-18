@@ -12,7 +12,7 @@ A game discovery application built with React 19, TypeScript and Chakra UI, powe
   <img alt="React Router" src="https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white" />
 </p>
 
-**🔗 Live demo: [games-hub.vercel.app](https://games-hub.vercel.app/)** _(if games don't load, RAWG's API may be down — not an app bug)_
+**🔗 Live demo: [games-hub.vercel.app](https://games-hub.vercel.app/)** _(if games don't load, RAWG's API may be down)_
 
 ### 🖥️ UI Preview
 
